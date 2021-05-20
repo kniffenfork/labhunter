@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: labhunter
+  name: labhunter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: labhunter
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: labhunter
+    spec:
+      containers:
+        - image: labhunter
+          name: labhunter
+          imagePullPolicy: Never
+          resources: {}
+          volumeMounts:
+            - name: config
+              mountPath: /opt/config
+              readOnly: true
+            - name: db-passwords
+              mountPath: /opt/secrets/db/
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8081
+            initialDelaySeconds: 60
+            timeoutSeconds: 1
+      volumes:
+        - name: config
+          configMap:
+            defaultMode: 420
+            name: labhunter-config
+        - name: db-passwords
+          secret:
+            defaultMode: 420
+            secretName: labhunter-db-passwords
+status: {}

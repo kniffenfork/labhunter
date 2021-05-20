@@ -1,0 +1,22 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: labhunter-config
+data:
+  application.yaml: |-
+    server:
+      port: 8080
+    spring:
+      datasource:
+        url: jdbc:postgresql://172.17.0.6:5432/labhunter
+        driver-class-name: org.postgresql.Driver
+        username: postgresadmin
+      liquibase:
+        change-log: classpath:db/changelog/changelog-master.xml
+    headhunter:
+      api:
+        url: https://api.hh.ru
+    jwt:
+      header: Authorization
+      secret: RusskiyeVpered
+      expiration: 604800

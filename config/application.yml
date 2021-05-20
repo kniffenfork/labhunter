@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5554/labhunter
+    driver-class-name: org.postgresql.Driver
+    username: postgresadmin
+    password: postgres
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.xml
+headhunter:
+  api:
+    url: https://api.hh.ru
+jwt:
+  header: Authorization
+  secret: RusskiyeVpered
+  expiration: 604800

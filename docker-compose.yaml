@@ -1,0 +1,25 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - "5554:5432"
+    environment:
+      POSTGRES_DB: labhunter
+      POSTGRES_USER: postgresadmin
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - labhunter:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@mydomain.com
+      - PGADMIN_DEFAULT_PASSWORD=postgres
+volumes:
+  labhunter:
+
