@@ -29,9 +29,10 @@
 - Spring Data JPA
 - Spring Security
 - Spring Cloud
-- Gradle
+- Maven
 - Liquibase
 - Docker
+- k8s  
 - PostgreSQL
 - JUnit 5
 - Mockito
@@ -45,15 +46,7 @@
 
 ### Сборка и запуск: <a name="сборка-и-запуск"/>
 
-Путь простой:
-
-- Запустить `docker-compose up` в корневой папке проекта.
-
-
-
-Путь сложный (если докер может уничтожить вашу локальную машину):
-
-- В файле по пути `src/main/resources/application.yml` заменить ссылку на вашу базу данных, 	пароль и username пользователя БД.
+- Запустить `docker-compose up` в корневой папке проекта и запустить локально приложение.
 
 
 ------
