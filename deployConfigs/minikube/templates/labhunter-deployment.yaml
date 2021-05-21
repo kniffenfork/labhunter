@@ -3,23 +3,23 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: labhunter
-  name: labhunter
+    app: {{service.name}}
+  name: {{service.name}}
 spec:
-  replicas: 1
+  replicas: {{replicas}}
   selector:
     matchLabels:
-      app: labhunter
+      app: {{service.name}}
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: labhunter
+        app: {{service.name}}
     spec:
       containers:
-        - image: labhunter
-          name: labhunter
+        - image: {{service.name}}
+          name: {{service.name}}
           imagePullPolicy: Never
           resources: {}
           volumeMounts:
@@ -32,16 +32,16 @@ spec:
           readinessProbe:
             httpGet:
               path: /actuator/health
-              port: 8081
+              port: 8080
             initialDelaySeconds: 60
             timeoutSeconds: 1
       volumes:
         - name: config
           configMap:
             defaultMode: 420
-            name: labhunter-config
+            name: {{service.name}}-config
         - name: db-passwords
           secret:
             defaultMode: 420
-            secretName: labhunter-db-passwords
+            secretName: {{service.name}}-db-passwords
 status: {}
