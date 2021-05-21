@@ -11,7 +11,7 @@
 
     <dependencies>
         <into layer="app">
-            <include>ru.sbt.generators.sberflake:*:*</include>
+            <include>ru.lab.hunter:*:*</include>
         </into>
         <into layer="platform">
             <include>ru.sbrf.*:*:*</include>
