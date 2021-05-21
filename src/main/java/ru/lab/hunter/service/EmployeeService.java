@@ -15,6 +15,11 @@ public interface EmployeeService {
     ResponseEntity<?>       editCv(String authorizationHeader, CvEditRequest request, Long id);
 
     // utility functions
+    void                    overrideCoursesAndSkills(Cv cv, CvEditRequest request, Long id);
+    void                    delAllKeySkillsFromCv(Cv cv);
+    void                    delAllCvCoursesFromCv(Cv cv);
+    void                    saveCvKeySkillsFromRegRequest(Cv cv, CvRegistrationRequest request);
+    void                    saveCvCoursesFromRegRequest(Cv cv, CvRegistrationRequest request);
     void                    validateRegistrationRequest(CvRegistrationRequest request);
     void                    editCvFieldsFromEditRequest(Cv cv, CvEditRequest request);
     void                    saveKeySkillsFromEditRequest(Cv cv, CvEditRequest request);

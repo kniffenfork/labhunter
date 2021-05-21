@@ -43,4 +43,7 @@ public class Cv {
 
     @OneToMany(mappedBy="cv", fetch = FetchType.LAZY)
     private Set<CvKeySkill> keySkills;
+
+    @OneToMany(mappedBy="cv", fetch = FetchType.LAZY)
+    private Set<CvCourse> cvCourses;
 }
