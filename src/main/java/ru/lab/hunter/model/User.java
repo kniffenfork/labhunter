@@ -60,7 +60,7 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Set<Cv> cvs;

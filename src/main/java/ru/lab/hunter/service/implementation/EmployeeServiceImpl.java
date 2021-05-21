@@ -86,7 +86,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             Cv cvToDel = Optional.of(cvRepository.getOne(id)).orElseThrow(() -> new CvNotFoundException("There is no cv with such id."));
             check4AbilityToDelCv(cvToDel, email);
-            //delAllKeySkillsFromCv(cvToDel);
+            delAllKeySkillsFromCv(cvToDel);
             cvRepository.deleteById(id);
             log.info(String.format("User %s successfully deleted cv.", email));
             return new ResponseEntity<>(new ResponseMessage("Successfully deleted cv."), HttpStatus.OK);
@@ -108,6 +108,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             Cv cv = Optional.of(cvRepository.getOne(id)).orElseThrow(() -> new CvNotFoundException("Can't get cv by id."));
             checkThatNotEditingNotYoursCv(cv, email);
             editCvFieldsFromEditRequest(cv, request);
+            cvKeySkillRepository.deleteCvKeySkillsByCvIdEquals(id);
             saveKeySkillsFromEditRequest(cv, request);
             cvRepository.save(cv);
             log.info(String.format("User %s successfully edited cv. Request info: %s.", email, request.toString()));
