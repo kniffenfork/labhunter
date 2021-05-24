@@ -9,7 +9,9 @@ import ru.lab.hunter.model.ResponseMessage;
 import ru.lab.hunter.model.User;
 import ru.lab.hunter.model.builder.CvBuilder;
 import ru.lab.hunter.model.employee.Cv;
+import ru.lab.hunter.model.employee.CvCourse;
 import ru.lab.hunter.model.employee.CvKeySkill;
+import ru.lab.hunter.repository.CvCourseRepository;
 import ru.lab.hunter.service.exception.BadRequestException;
 import ru.lab.hunter.service.exception.CvNotFoundException;
 import ru.lab.hunter.service.request.CvEditRequest;
@@ -32,16 +34,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final CvRepository                  cvRepository;
     private final UserRepository                userRepository;
     private final CvKeySkillRepository          cvKeySkillRepository;
+    private final CvCourseRepository            cvCourseRepository;
 
 
     public EmployeeServiceImpl(JwtTokenProvider jwtTokenProvider,
                                CvRepository cvRepository,
                                UserRepository userRepository,
-                               CvKeySkillRepository cvKeySkillsRepository) {
-        this.jwtTokenProvider =     jwtTokenProvider;
-        this.cvRepository =         cvRepository;
-        this.userRepository =       userRepository;
+                               CvKeySkillRepository cvKeySkillsRepository,
+                               CvCourseRepository cvCourseRepository) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.cvRepository = cvRepository;
+        this.userRepository = userRepository;
         this.cvKeySkillRepository = cvKeySkillsRepository;
+        this.cvCourseRepository = cvCourseRepository;
     }
 
     //key functions
@@ -63,6 +68,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             User employee = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Error while getting employee from JWT."));
             Cv cv = makeCvFromCvRegistrationRequest(request, employee.getId());
             saveCvKeySkillsFromRegRequest(cv, request);
+            saveCvCoursesFromRegRequest(cv, request);
             log.info(String.format("Added new cv for user with email = %s, info: %s.", email, request.toString()));
             return new ResponseEntity<>(new ResponseMessage("Successfully added new CV for user."), HttpStatus.OK);
 
@@ -86,7 +92,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             Cv cvToDel = Optional.of(cvRepository.getOne(id)).orElseThrow(() -> new CvNotFoundException("There is no cv with such id."));
             check4AbilityToDelCv(cvToDel, email);
-            //delAllKeySkillsFromCv(cvToDel);
+            delAllKeySkillsFromCv(cvToDel);
+            delAllCvCoursesFromCv(cvToDel);
             cvRepository.deleteById(id);
             log.info(String.format("User %s successfully deleted cv.", email));
             return new ResponseEntity<>(new ResponseMessage("Successfully deleted cv."), HttpStatus.OK);
@@ -100,6 +107,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     //TODO: добавить проверки на нулевые/маленькие поля
+    // TODO: разбить на функции
     @Transactional
     @Override
     public ResponseEntity<?> editCv(String authorizationHeader, CvEditRequest request, Long id) {
@@ -108,7 +116,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             Cv cv = Optional.of(cvRepository.getOne(id)).orElseThrow(() -> new CvNotFoundException("Can't get cv by id."));
             checkThatNotEditingNotYoursCv(cv, email);
             editCvFieldsFromEditRequest(cv, request);
-            saveKeySkillsFromEditRequest(cv, request);
+            overrideCoursesAndSkills(cv, request, id);
             cvRepository.save(cv);
             log.info(String.format("User %s successfully edited cv. Request info: %s.", email, request.toString()));
             return new ResponseEntity<>(new ResponseMessage("Successfully edited cv."), HttpStatus.OK);
@@ -120,6 +128,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     //utility functions
 
+    @Override
+    public void overrideCoursesAndSkills(Cv cv, CvEditRequest request, Long id) {
+        cvKeySkillRepository.deleteCvKeySkillsByCvIdEquals(id);
+        cvCourseRepository.deleteCvCourseByCvIdEquals(id);
+        saveKeySkillsFromEditRequest(cv, request);
+        saveCoursesFromEditRequest(cv, request);
+    }
+
+    @Override
     public void delAllKeySkillsFromCv(Cv cv) {
         Set<CvKeySkill> cvKeySkills = cv.getKeySkills();
         log.info(String.format("cv key skills to del: %s", cvKeySkills.toString()));
@@ -128,10 +145,28 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    @Override
+    public void delAllCvCoursesFromCv(Cv cv) {
+        Set<CvCourse> cvCourses = cv.getCvCourses();
+        log.info(String.format("cv courses to del: %s", cvCourses.toString()));
+        for (CvCourse cvCourse: cvCourses) {
+            cvCourseRepository.delete(cvCourse);
+        }
+    }
+
+    @Override
      public void saveCvKeySkillsFromRegRequest(Cv cv, CvRegistrationRequest request) {
         for (CvKeySkill keySkill: request.getKeySkills()) {
             keySkill.setCvId(cv.getId());
             cvKeySkillRepository.save(keySkill);
+        }
+     }
+
+     @Override
+     public void saveCvCoursesFromRegRequest(Cv cv, CvRegistrationRequest request) {
+        for (CvCourse cvCourse: request.getCvCourses()) {
+            cvCourse.setCvId(cv.getId());
+            cvCourseRepository.save(cvCourse);
         }
      }
 
@@ -163,6 +198,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         for (CvKeySkill keySkill: request.getKeySkills()) {
             keySkill.setCvId(cv.getId());
             cvKeySkillRepository.save(keySkill);
+        }
+    }
+
+    public void saveCoursesFromEditRequest(Cv cv, CvEditRequest request) {
+        for (CvCourse cvCourse: request.getCvCourses()) {
+            cvCourse.setCvId(cv.getId());
+            cvCourseRepository.save(cvCourse);
         }
     }
 

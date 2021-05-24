@@ -11,5 +11,4 @@ public class LabHunterApplication {
     public static void main(String[] args) {
         SpringApplication.run(LabHunterApplication.class, args);
     }
-
 }

@@ -1,6 +1,7 @@
 package ru.lab.hunter.service.request;
 
 import lombok.Data;
+import ru.lab.hunter.model.employee.CvCourse;
 import ru.lab.hunter.model.employee.CvKeySkill;
 
 import java.util.Set;
@@ -14,17 +15,5 @@ public class CvEditRequest {
     private Integer                 salary;
     private String                  name;
     private Set<CvKeySkill>         keySkills;
-
-    @Override
-    public String toString() {
-        return "CvEditRequest{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", schedule='" + schedule + '\'' +
-                ", experience='" + experience + '\'' +
-                ", salary=" + salary +
-                ", name='" + name + '\'' +
-                ", keySkills=" + keySkills +
-                '}';
-    }
+    private Set<CvCourse>           cvCourses;
 }

@@ -1,6 +1,7 @@
 package ru.lab.hunter.service.request;
 
 import lombok.Data;
+import ru.lab.hunter.model.employee.CvCourse;
 import ru.lab.hunter.model.employee.CvKeySkill;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ public class CvRegistrationRequest {
     private Integer                 salary;
     private String                  name;
     private Set<CvKeySkill>         keySkills;
+    private Set<CvCourse>           cvCourses;
 
     public boolean havingNullFields() {
         return description == null || schedule == null || experience == null || name == null;

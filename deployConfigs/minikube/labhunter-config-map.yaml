@@ -8,7 +8,7 @@ data:
       port: 8080
     spring:
       datasource:
-        url: jdbc:postgresql://172.17.0.6:5432/labhunter
+        jdbcUrl: jdbc:postgresql://172.17.0.6:5432/labhunter
         driver-class-name: org.postgresql.Driver
         username: postgresadmin
       liquibase:

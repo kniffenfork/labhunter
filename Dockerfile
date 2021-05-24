@@ -1,8 +1,5 @@
-ARG BASEIMAGE
-FROM $BASEIMAGE
+FROM openjdk:11
 WORKDIR /opt
-COPY ./target/bootstrap/ ./
-COPY ./target/platform/ ./
-COPY ./target/thirdparty/ ./
-COPY ./target/app/ ./
-ENTRYPOINT exec java ${JAVA_OPTIONS} -Dspring.config.location=config/application.yaml,secrets/db/db.yaml org.springframework.boot.loader.JarLauncher
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-Dspring.config.location=config/application.yaml, secrets/db/db.yaml","-jar","/app.jar"]
