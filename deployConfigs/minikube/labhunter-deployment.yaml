@@ -3,23 +3,23 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: {{service.name}}
-  name: {{service.name}}
+    app: labhunter
+  name: labhunter
 spec:
-  replicas: {{replicas}}
+  replicas: 1
   selector:
     matchLabels:
-      app: {{service.name}}
+      app: labhunter
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: {{service.name}}
+        app: labhunter
     spec:
       containers:
-        - image: {{service.name}}
-          name: {{service.name}}
+        - image: labhunter
+          name: labhunter
           imagePullPolicy: Never
           resources: {}
           volumeMounts:
@@ -39,9 +39,9 @@ spec:
         - name: config
           configMap:
             defaultMode: 420
-            name: {{service.name}}-config
+            name: labhunter-config
         - name: db-passwords
           secret:
             defaultMode: 420
-            secretName: {{service.name}}-db-passwords
+            secretName: labhunter-db-passwords
 status: {}
