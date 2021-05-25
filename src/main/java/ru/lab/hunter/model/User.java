@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import ru.lab.hunter.model.employee.Cv;
+import ru.lab.hunter.model.employer.Company;
+import ru.lab.hunter.model.employer.Vacancy;
 import ru.lab.hunter.security.Role;
 import ru.lab.hunter.security.Status;
 import javax.persistence.*;
@@ -61,9 +63,16 @@ public class User {
     private Status status;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Set<Cv> cvs;
+
+    @OneToMany(mappedBy = "employer")
+    @JsonIgnore
+    private Set<Vacancy> vacancies;
+
+    @ManyToMany(mappedBy="employers")
+    @JsonIgnore
+    private Set<Company> companies;
 
     @Override
     public String toString() {

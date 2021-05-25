@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.lab.hunter.model.ResponseMessage;
 import ru.lab.hunter.model.User;
 import ru.lab.hunter.model.employee.Cv;
-import ru.lab.hunter.repository.CvRepository;
+import ru.lab.hunter.repository.employee.CvRepository;
 import ru.lab.hunter.repository.UserRepository;
 import ru.lab.hunter.security.Role;
 import ru.lab.hunter.security.Status;

@@ -12,14 +12,13 @@ import ru.lab.hunter.model.builder.CvBuilder;
 import ru.lab.hunter.model.builder.CvRegistrationRequestBuilder;
 import ru.lab.hunter.model.employee.Cv;
 import ru.lab.hunter.service.request.CvRegistrationRequest;
-import ru.lab.hunter.repository.CvRepository;
+import ru.lab.hunter.repository.employee.CvRepository;
 import ru.lab.hunter.repository.UserRepository;
 import ru.lab.hunter.security.jwt.JwtTokenProvider;
 import ru.lab.hunter.service.EmployeeService;
 import ru.lab.hunter.service.exception.NullFieldException;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
