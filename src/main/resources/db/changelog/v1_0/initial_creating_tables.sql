@@ -27,16 +27,6 @@ INSERT INTO users(first_name, last_name, phone_number, email, vk, password, stat
 -- BASIC TABLES FOR COMPANIES AND VACANCIES
 --
 
-DROP TABLE IF EXISTS companies CASCADE;
-CREATE TABLE companies (
-                                            id BIGSERIAL NOT NULL PRIMARY KEY,
-                                            name VARCHAR(255) NOT NULL,
-                                            description VARCHAR(255),
-                                            website VARCHAR(255)
-);
-
-CREATE INDEX ON companies(name);
-
 DROP TABLE IF EXISTS vacancies CASCADE;
 CREATE TABLE vacancies (
                                          id BIGSERIAL NOT NULL PRIMARY KEY,
@@ -45,7 +35,6 @@ CREATE TABLE vacancies (
                                          experience VARCHAR(255) NOT NULL,
                                          archived BOOLEAN DEFAULT false,
                                          name VARCHAR(255) NOT NULL,
-                                         company_id BIGINT NOT NULL REFERENCES companies(id),
                                          employer_id BIGINT NOT NULL REFERENCES users(id)
 );
 
@@ -53,10 +42,11 @@ CREATE INDEX ON vacancies(name);
 
 DROP TABLE IF EXISTS vacancies_salaries CASCADE;
 CREATE TABLE vacancies_salaries (
+                                                  id BIGSERIAL NOT NULL PRIMARY KEY,
                                                   salary_to BIGINT,
                                                   salary_from BIGINT,
                                                   gross BOOLEAN NOT NULL,
-                                                  vacancy_id BIGINT NOT NULL PRIMARY KEY REFERENCES vacancies(id)
+                                                  vacancy_id BIGINT NOT NULL REFERENCES vacancies(id)
 );
 
 DROP TABLE IF EXISTS vacancies_skills CASCADE;
@@ -68,18 +58,13 @@ CREATE TABLE vacancies_skills (
 
 DROP TABLE IF EXISTS vacancies_addresses CASCADE;
 CREATE TABLE vacancies_addresses (
+                                                   id BIGSERIAL NOT NULL PRIMARY KEY,
+                                                   country VARCHAR(255) NOT NULL,
                                                    city VARCHAR(255) NOT NULL,
                                                    street VARCHAR(255) NOT NULL,
                                                    building VARCHAR(255) NOT NULL,
                                                    description VARCHAR(255),
-                                                   vacancy_id BIGINT NOT NULL PRIMARY KEY REFERENCES vacancies(id)
-);
-
-DROP TABLE IF EXISTS employers_companies CASCADE;
-CREATE TABLE employers_companies (
-                                              employer_id BIGINT NOT NULL REFERENCES users(id),
-                                              company_id BIGINT NOT NULL REFERENCES companies(id),
-                                              PRIMARY KEY(employer_id, company_id)
+                                                   vacancy_id BIGINT NOT NULL REFERENCES vacancies(id)
 );
 
 --

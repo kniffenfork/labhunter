@@ -13,6 +13,6 @@
         <tagDatabase tag="db_init"/>
     </changeSet>
 
-    <include file="v1_0/106-creating-lab-enviroment.xml" relativeToChangelogFile="true"/>
+    <include file="v1_0/109-creating-lab-enviroment.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

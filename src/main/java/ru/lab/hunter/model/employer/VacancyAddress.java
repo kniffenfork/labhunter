@@ -1,10 +1,8 @@
 package ru.lab.hunter.model.employer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
@@ -14,6 +12,10 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class VacancyAddress {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
+    private Long id;
+
     @Column(name = "vacancy_id")
     @JsonIgnore
     private Long vacancyId;
@@ -40,7 +42,8 @@ public class VacancyAddress {
     @Override
     public String toString() {
         return "VacancyAddress{" +
-                "vacancyId=" + vacancyId +
+                "id=" + id +
+                ", vacancyId=" + vacancyId +
                 ", country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +

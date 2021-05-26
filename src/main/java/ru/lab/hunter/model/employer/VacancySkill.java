@@ -1,10 +1,8 @@
 package ru.lab.hunter.model.employer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
@@ -15,6 +13,7 @@ import javax.validation.constraints.NotEmpty;
 public class VacancySkill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @NotEmpty
@@ -22,9 +21,10 @@ public class VacancySkill {
     private String name;
 
     @Column(name = "vacancy_id")
+    @JsonIgnore
     private Long vacancyId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="vacancy_id", insertable = false, updatable = false)
     @JsonIgnore
     private Vacancy vacancy;

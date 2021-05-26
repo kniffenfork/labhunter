@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import ru.lab.hunter.model.User;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -26,27 +25,19 @@ public class Vacancy {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "company_id")
-    private Long companyId;
-
     @Column(name = "employer_id")
     private Long employerId;
 
     private Boolean archived;
 
-    @OneToMany(mappedBy="vacancy", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy="vacancy", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<VacancySkill> vacancySkills;
 
-    @OneToOne(mappedBy="vacancy", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToOne(mappedBy="vacancy", cascade = CascadeType.ALL, orphanRemoval = true)
     private VacancyAddress vacancyAddress;
 
-    @OneToOne(mappedBy="vacancy", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToOne(mappedBy="vacancy", cascade = CascadeType.ALL, orphanRemoval = true)
     private VacancySalary vacancySalary;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="company_id", insertable = false, updatable = false)
-    @JsonIgnore
-    private Company company;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="employer_id", insertable = false, updatable = false)
@@ -61,13 +52,11 @@ public class Vacancy {
                 ", schedule='" + schedule + '\'' +
                 ", experience='" + experience + '\'' +
                 ", name='" + name + '\'' +
-                ", companyId=" + companyId +
                 ", employerId=" + employerId +
                 ", archived=" + archived +
                 ", vacancySkills=" + vacancySkills +
                 ", vacancyAddress=" + vacancyAddress +
                 ", vacancySalary=" + vacancySalary +
-                ", company=" + company +
                 ", employer=" + employer +
                 '}';
     }
