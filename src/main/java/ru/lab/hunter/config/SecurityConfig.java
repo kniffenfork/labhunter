@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("api/employee/vacancies").hasAnyAuthority(Permission.EMPLOYEE_READ.getPermission())
                 .antMatchers("/api/employee/cv").hasAuthority(Permission.EMPLOYEE_READ.getPermission())
                 .antMatchers("/api/admin/*").hasAuthority(Permission.DEVELOPERS_WRITE.getPermission())
+                .antMatchers("/api/employer/*").hasAuthority(Permission.EMPLOYER_WRITE.getPermission())
                 .anyRequest()
                 .authenticated()
                 .and()

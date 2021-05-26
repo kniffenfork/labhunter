@@ -3,10 +3,7 @@ package ru.lab.hunter.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import ru.lab.hunter.model.employee.Cv;
-import ru.lab.hunter.model.employer.Company;
 import ru.lab.hunter.model.employer.Vacancy;
 import ru.lab.hunter.security.Role;
 import ru.lab.hunter.security.Status;
@@ -70,10 +67,6 @@ public class User {
     @JsonIgnore
     private Set<Vacancy> vacancies;
 
-    @ManyToMany(mappedBy="employers")
-    @JsonIgnore
-    private Set<Company> companies;
-
     @Override
     public String toString() {
         return "User{" +
@@ -90,6 +83,7 @@ public class User {
                 ", role=" + role +
                 ", status=" + status +
                 ", cvs=" + cvs +
+                ", vacancies=" + vacancies +
                 '}';
     }
 }
